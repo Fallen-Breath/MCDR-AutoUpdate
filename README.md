@@ -1,2 +1,4 @@
 # MCDR-AutoUpdate
-MCDR Snapshot server AutoUpdate Plugin
+MCDR Snapshot server AutoUpdate Plugin\
+Plugin will check snapshot update everytime the server start\
+Unsupport for release version server
