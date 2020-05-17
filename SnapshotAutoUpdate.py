@@ -45,8 +45,9 @@ def server_update(server):
             break
 
     if version_json is not '':
-        urllib.request.urlretrieve(version_json, version_check_path)
-        with open(version_check_path) as version_file:
+        urllib.request.urlretrieve(version_json, 'server.json')
+        with open('server.json') as version_file:
             version_json_file = json.load(version_file)
             server_url = version_json_file["downloads"]["server"]["url"]
-    urllib.request.urlretrieve(server_url, 'server.jar')
+    urllib.request.urlretrieve(server_url, 'server/server.jar')
+    os.remove('server.json')
