@@ -4,6 +4,7 @@ import urllib
 import filecmp
 import shutil
 import json
+import time
 
 version_check_path = './plugins/AutoUpdate/Current_Version.json'
 empty_list = {}
@@ -16,12 +17,14 @@ def on_server_startup(server):
             json.dump(empty_list, f, indent=4)
         server.stop()
         server_update(server)
+        time.sleep(3)
         server.start()
         if os.path.exists('versions_new.json'):
             os.remove('versions_new.json')
     elif not filecmp.cmp('versions_new.json', version_check_path):
         server.stop()
         server_update(server)
+        time.sleep(3)
         server.start()
         if os.path.exists('versions_new.json'):
             os.remove('versions_new.json')
