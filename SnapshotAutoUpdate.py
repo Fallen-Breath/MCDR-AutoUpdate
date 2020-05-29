@@ -17,6 +17,8 @@ def on_server_startup(server):
             json.dump(empty_list, f, indent=4)
         server.stop()
         server_update(server)
+        os.remove(r'./server/server.jar')
+        os.rename(r'./server/server_New.jar', r'./server/server.jar')
         time.sleep(3)
         server.start()
         if os.path.exists('versions_new.json'):
@@ -24,6 +26,8 @@ def on_server_startup(server):
     elif not filecmp.cmp('versions_new.json', version_check_path):
         server.stop()
         server_update(server)
+        os.remove(r'./server/server.jar')
+        os.rename(r'./server/server_New.jar', r'./server/server.jar')
         time.sleep(3)
         server.start()
         if os.path.exists('versions_new.json'):
@@ -52,5 +56,5 @@ def server_update(server):
         with open('server.json') as version_file:
             version_json_file = json.load(version_file)
             server_url = version_json_file["downloads"]["server"]["url"]
-    urllib.request.urlretrieve(server_url, 'server/server.jar')
+    urllib.request.urlretrieve(server_url, 'server/server_New.jar')
     os.remove('server.json')
