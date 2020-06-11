@@ -14,7 +14,17 @@ empty_list = {}
 update_version = 'snapshot'
 # update_version = 'release'
 
+
+def on_info(server, info):
+    if info.content == '!!checkupdate':
+        check_update(server)
+
+
 def on_server_startup(server):
+    check_update(server)
+
+
+def check_update(server):
     urllib.request.urlretrieve('https://launchermeta.mojang.com/mc/game/version_manifest.json', 'versions_new.json')
     if not os.path.exists(version_check_path):
         os.mkdir('./plugins/AutoUpdate')
@@ -40,6 +50,7 @@ def on_server_startup(server):
     else:
         os.remove('versions_new.json')
         server.logger.info('[AutoUpdate] Update Check Success, No New Version Exists')
+
 
 def server_update(server):
     shutil.copy2('versions_new.json', version_check_path)
