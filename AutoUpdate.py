@@ -39,14 +39,32 @@ def check_update(server):
         if os.path.exists('versions_new.json'):
             os.remove('versions_new.json')
     elif not filecmp.cmp('versions_new.json', version_check_path):
-        server.stop()
-        server_update(server)
-        os.remove(r'./server/server.jar')
-        os.rename(r'./server/server_New.jar', r'./server/server.jar')
-        time.sleep(3)
-        server.start()
-        if os.path.exists('versions_new.json'):
-            os.remove('versions_new.json')
+        if update_version == 'snapshot':
+            server.stop()
+            server_update(server)
+            os.remove(r'./server/server.jar')
+            os.rename(r'./server/server_New.jar', r'./server/server.jar')
+            time.sleep(3)
+            server.start()
+            if os.path.exists('versions_new.json'):
+                os.remove('versions_new.json')
+        else:
+            with open(version_check_path) as Version1:
+                version1 = json.load(Version1)
+            with open('versions_new.json') as Version2:
+                version2 = json.load(Version2)
+            if version1["latest"][update_version] == version2["latest"][update_version]:
+                os.remove('versions_new.json')
+                server.logger.info('[AutoUpdate] Update Check Success, No New Version Exists')
+            else:
+                server.stop()
+                server_update(server)
+                os.remove(r'./server/server.jar')
+                os.rename(r'./server/server_New.jar', r'./server/server.jar')
+                time.sleep(3)
+                server.start()
+                if os.path.exists('versions_new.json'):
+                    os.remove('versions_new.json')
     else:
         os.remove('versions_new.json')
         server.logger.info('[AutoUpdate] Update Check Success, No New Version Exists')
